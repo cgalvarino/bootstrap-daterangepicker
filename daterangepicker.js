@@ -296,18 +296,19 @@
             }
         }
 
+        var ordered_ranges = [];
         if (typeof options.ranges === 'object') {
-            for (range in options.ranges) {
-
-                if (typeof options.ranges[range][0] === 'string')
-                    start = moment(options.ranges[range][0], this.locale.format);
+            for (var i = 0; i < options.ranges.length; i++) {
+                var range = options.ranges[i].key;
+                if (typeof options.ranges[i]['value'][0] === 'string')
+                    start = moment(options.ranges[i]['value'][0], this.locale.format);
                 else
-                    start = moment(options.ranges[range][0]);
+                    start = moment(options.ranges[i]['value'][0]);
 
-                if (typeof options.ranges[range][1] === 'string')
-                    end = moment(options.ranges[range][1], this.locale.format);
+                if (typeof options.ranges[i]['value'][1] === 'string')
+                    end = moment(options.ranges[i]['value'][1], this.locale.format);
                 else
-                    end = moment(options.ranges[range][1]);
+                    end = moment(options.ranges[i]['value'][1]);
 
                 // If the start or end date exceed those allowed by the minDate or dateLimit
                 // options, shorten the range to the allowable period.
@@ -324,18 +325,19 @@
                 // after the maximum, don't display this range option at all.
                 if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
                     continue;
-                
+
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea');
                 elem.innerHTML = range;
                 var rangeHtml = elem.value;
 
                 this.ranges[rangeHtml] = [start, end];
+                ordered_ranges.push(rangeHtml);
             }
 
             var list = '<ul>';
-            for (range in this.ranges) {
-                list += '<li>' + range + '</li>';
+            for (var i = 0; i < ordered_ranges.length; i++) {
+                list += '<li>' + ordered_ranges[i] + '</li>';
             }
             list += '<li>' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
