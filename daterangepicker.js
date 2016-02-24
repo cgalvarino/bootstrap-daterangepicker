@@ -57,6 +57,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.ordered_ranges = [];
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -296,7 +297,7 @@
             }
         }
 
-        var ordered_ranges = [];
+        this.ordered_ranges = [];
         if (typeof options.ranges === 'object') {
             for (var i = 0; i < options.ranges.length; i++) {
                 var range = options.ranges[i].key;
@@ -332,12 +333,12 @@
                 var rangeHtml = elem.value;
 
                 this.ranges[rangeHtml] = [start, end];
-                ordered_ranges.push(rangeHtml);
+                this.ordered_ranges.push(rangeHtml);
             }
 
             var list = '<ul>';
-            for (var i = 0; i < ordered_ranges.length; i++) {
-                list += '<li>' + ordered_ranges[i] + '</li>';
+            for (var i = 0; i < this.ordered_ranges.length; i++) {
+                list += '<li>' + this.ordered_ranges[i] + '</li>';
             }
             list += '<li>' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
@@ -1325,7 +1326,8 @@
         calculateChosenLabel: function() {
           var customRange = true;
           var i = 0;
-          for (var range in this.ranges) {
+          for (var i = 0; i < this.ordered_ranges.length; i++) {
+              var range = this.ordered_ranges[i];
               if (this.timePicker) {
                   if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
                       customRange = false;
@@ -1340,7 +1342,6 @@
                       break;
                   }
               }
-              i++;
           }
           if (customRange) {
               this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
