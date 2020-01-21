@@ -101,6 +101,7 @@
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof jQuery))
             options.template = '<div class="daterangepicker dropdown-menu">' +
+              '<div class="calendar-container">' + 
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
@@ -129,10 +130,17 @@
                         '<button class="cancelBtn" type="button"></button>' +
                     '</div>' +
                 '</div>' +
+              '</div>' +
+              '<div class="slice-container">' +
+              '</div>' +
             '</div>';
 
+        var $template = $(options.template);
+        if (options.timeSlicesView) {
+          options.timeSlicesView.setElement($template.find('.slice-container'));
+        }
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
-        this.container = $(options.template).appendTo(this.parentEl);
+        this.container = $template.appendTo(this.parentEl);
 
         //
         // handle all the possible options overriding defaults
@@ -599,6 +607,8 @@
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
+
+            this.element.trigger('updateCalendars.daterangepicker', this);
         },
 
         renderCalendar: function(side) {
@@ -1134,12 +1144,14 @@
 
         showCalendars: function() {
             this.container.addClass('show-calendar');
+            this.container.find('.slice-container').show();
             this.move();
             this.element.trigger('showCalendar.daterangepicker', this);
         },
 
         hideCalendars: function() {
             this.container.removeClass('show-calendar');
+            this.container.find('.slice-container').hide();
             this.element.trigger('hideCalendar.daterangepicker', this);
         },
 

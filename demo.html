@@ -276,14 +276,14 @@
             options.dateLimit = { days: 7 };
 
           if ($('#ranges').is(':checked')) {
-            options.ranges = {
-              'Today': [moment(), moment()],
-              'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-              'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-              'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-              'This Month': [moment().startOf('month'), moment().endOf('month')],
-              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            };
+            options.ranges = [
+              {key: 'Today',value: [moment(), moment()]},
+              {key: 'Yesterday',value: [moment().subtract(1, 'days'), moment().subtract(1, 'days')]},
+              {key: 'Last 7 Days',value: [moment().subtract(6, 'days'), moment()]},
+              {key: 'Last 30 Days',value: [moment().subtract(29, 'days'), moment()]},
+              {key: 'This Month',value: [moment().startOf('month'), moment().endOf('month')]},
+              {key: 'Last Month',value: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]}
+            ];
           }
 
           if ($('#locale').is(':checked')) {

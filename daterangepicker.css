@@ -230,3 +230,15 @@
   .daterangepicker .calendar.left {
     clear: none; } }
 
+
+.daterangepicker .calendar-container {
+  float: left;
+}
+
+.daterangepicker .slice-container {
+  max-width: 650px;
+}
+
+.daterangepicker .slice-container .slice-controls {
+  height: 48px;
+}
